@@ -31,9 +31,10 @@ exports.AllCounts = function (req, res) {
 }
 
 exports.employee_attendance = function (req, res) {
-    var query = (`SELECT in_time,out_time,total_time,attendance_date, FROM employee_attendance WHERE employee_attendance.employee_id ='${req.user.empID}'`)
+    var query = (`SELECT in_time,out_time, total_time,attendance_date FROM employee_attendance WHERE employee_attendance.employee_id ='${req.user.empID}' AND  MONTH(attendance_date) = MONTH(CURRENT_DATE()) AND YEAR(attendance_date) = YEAR(CURRENT_DATE())`)
+
     connection.query(query, (err, result) => {
-        console.log(err)
+
         if (err) {
             res.send({
                 "code": 202,
@@ -42,10 +43,43 @@ exports.employee_attendance = function (req, res) {
             })
         }
         else {
+            // let time_taken = result[0].out_time-result[0].in_time;
+
+            function diff_hours(dt2, dt1) {
+
+                var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+                diff /= (60);
+                return Math.abs(diff);
+
+            }
+
+            dt1 = new Date(result[0].in_time + 'AM');
+            console.log(dt1,"dt1")
+            dt2 = new Date(result[0].out_time);
+   
+            var total_time = diff_hours(dt1, dt2)
+
+    
+            let totalMonthTime = 0;
+            //             result.forEach(element => {
+            //                 totalMonthTime = totalMonthTime + element.time_taken
+            //             });
+            // averageMonthTime = totalMonthTime / result.length;
+
+            for (let i = 0; i < result.length; i++) {
+               
+                    totalMonthTime = total_time + totalMonthTime; 
+              
+            }
+            averageMonthTime = totalMonthTime / result.length;
+
+          
+            console.log(totalMonthTime, "ritik")
+            let obj = { "yesterday_attendance": total_time, "monthly_average": averageMonthTime }
             res.send({
                 "code": 200,
                 "message": "list of all holidays",
-                "data": result
+                "data": obj
             })
         }
     })
@@ -73,9 +107,9 @@ exports.HolidaysList = function (req, res) {
             }
 
 
-var query =`SELECT COUNT(leave_days) as Applied,leave_type,yearly_allowed as Allowed FROM apply_leave,leave_type WHERE apply_leave.leave_type_id=leave_type.id AND apply_leave.employee_id='${req.user.empID}'`
+            var query = `SELECT COUNT(leave_days) as Applied,leave_type,yearly_allowed as Allowed FROM apply_leave,leave_type WHERE apply_leave.leave_type_id=leave_type.id AND apply_leave.employee_id='${req.user.empID}'`
             connection.query(query, (err, results) => {
-   console.log(err)
+                console.log(err)
                 if (err) {
                     res.send({
                         "code": 202,
@@ -87,7 +121,7 @@ var query =`SELECT COUNT(leave_days) as Applied,leave_type,yearly_allowed as All
 
                 else {
 
-                    let data = { "holiday": result, "optional_leave": array ,"Allowed leave":results}
+                    let data = { "holiday": result, "optional_leave": array, "Allowed leave": results }
                     res.send({
                         "code": 200,
                         "message": "list of all holidays",
