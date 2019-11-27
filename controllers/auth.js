@@ -162,7 +162,7 @@ exports.addExperience = function (req, res) {
     }
 
     connection.query('INSERT INTO employee_experience SET ?', obj, function (error, results) {
-
+  console.log(error)
         if (error) {
             console.log("error ocurred", error);
             res.send({

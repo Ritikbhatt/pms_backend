@@ -138,20 +138,23 @@ exports.HolidaysList = function (req, res) {
 }
 exports.upcomingBirthDay = function (req, res) {
 
-    var query = 'SELECT empFirstName,dob FROM employee '
-    connection.query(query, (req, res) => {
-
+    var query = `SELECT empFirstName,dob FROM employee 
+    WHERE (MONTH(dob) >= MONTH(CURRENT_DATE()) AND DAY(dob)>= DAY(CURRENT_DATE()) AND YEAR(dob) = YEAR(CURRENT_DATE()))
+    OR (MONTH(dob) <= MONTH(CURRENT_DATE()) AND DAY(dob) <= DAY(CURRENT_DATE()) AND YEAR(dob) > YEAR(CURRENT_DATE()) )
+    LIMIT 4
+    `
+    connection.query(query, (err,result) => {
         if (err) {
             res.send({
                 "code": 202,
-                "message": "error occured"
-
+                "message": "error occured",
+                'error':err
             })
         }
         else {
             res.send({
                 "code": 200,
-                "message": "list of all holidays",
+                "message": "Upcoming Birthday List",
                 "data": result
             })
         }

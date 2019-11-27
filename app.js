@@ -9,6 +9,8 @@ var usersRouter = require('./routes/auth');
 var authRouter = require('./routes/user')
 var dashRouter = require('./routes/dashboard')
 var attendanceRouter = require('./routes/attendance')
+var project = require('./routes/project')
+var task = require('./routes/task')
 const expressip = require('express-ip');
 var app = express();
 
@@ -33,6 +35,8 @@ app.use('/auth', usersRouter);
 app.use('/user', authRouter)
 app.use('/dashboard',dashRouter)
 app.use('/attendance',attendanceRouter)
+app.use('/project',project)
+app.use('/task',task)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
