@@ -22,7 +22,7 @@ exports.AllCounts = function (req, res) {
 
             res.send({
                 "code": 200,
-                "message": "resulsy",
+                "message": "All counts For Dsr",
                 "data": result
             })
         }
@@ -94,8 +94,8 @@ exports.HolidaysList = function (req, res) {
         if (err) {
             res.send({
                 "code": 202,
-                "message": "error occured"
-
+                "message": "error occured",
+                'error':err
             })
         }
         else {
@@ -113,7 +113,8 @@ exports.HolidaysList = function (req, res) {
                 if (err) {
                     res.send({
                         "code": 202,
-                        "message": "error occured"
+                        "message": "error occured",
+                        'error':err
 
                     })
                 }
