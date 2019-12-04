@@ -1,7 +1,7 @@
 var connection = require("../config/config");
 var CodeGenerator = require('node-code-generator');
 var generator = new CodeGenerator();
-var pattern = 'A-###';
+var pattern = 'A-####';
 var howMany = 1;
 var options = {};
 // Generate an array of random unique project_code according to the provided pattern:
@@ -135,7 +135,7 @@ exports.add_project = (req, res) => {
         console.log(err, "ritik")
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error': err
 
@@ -159,7 +159,7 @@ exports.add_project = (req, res) => {
                         console.log(err, "bhatt")
                         if (err) {
                             res.send({
-                                "code": 202,
+                                "code": 404,
                                 "message": "error occured",
                                 'error': err
 
@@ -172,14 +172,14 @@ exports.add_project = (req, res) => {
                     })
                 }
                 res.send({
-                    "code": 200,
+                    "code": 404,
                     "message": "Project added successfully.",
                     "data": result
                 })
             }
             else {
                 res.send({
-                    "code": 400,
+                    "code": 200,
                     "message": result
                 })
                 //  connection.query(`SELECT `)
@@ -198,7 +198,7 @@ exports.project_billing_method_details = (req, res) => {
         console.log(err)
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured"
 
             })
@@ -206,7 +206,7 @@ exports.project_billing_method_details = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
+                'code': 200,
                 "message": 'Billing Details ',
                 "data": result
             })
@@ -223,7 +223,7 @@ exports.project_status = (req, res) => {
         console.log(err)
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured"
 
             })
@@ -231,8 +231,8 @@ exports.project_status = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
-                "message": 'data we get as..',
+                'code': 200,
+                "message": 'project status details',
                 "data": result
             })
         }
@@ -248,7 +248,7 @@ exports.project_priority = (req, res) => {
         console.log(err)
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured"
 
             })
@@ -256,8 +256,8 @@ exports.project_priority = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
-                "message": 'data we get as..',
+                'code': 200,
+                "message": 'project priority details',
                 "data": result
             })
         }
@@ -294,7 +294,7 @@ exports.update_project = (req, res) => {
         console.log(err, "ritik")
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error': err
 
@@ -335,7 +335,7 @@ exports.update_project = (req, res) => {
             }
             else {
                 res.send({
-                    "code": 400,
+                    "code": 200,
                     'message': 'Project updated successfully.',
                     "data": result
                 })
@@ -352,7 +352,7 @@ exports.listProject = (req, res) => {
     connection.query(query, (err, result) => {
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error':err 
 
@@ -361,7 +361,7 @@ exports.listProject = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
+                'code': 200,
                 "message": 'project details retrived success',
                 'data': result
             })
@@ -395,7 +395,7 @@ exports.project_clients = (req, res) => {
 
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error':err 
 
@@ -404,7 +404,7 @@ exports.project_clients = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
+                'code': 200,
                 "message": 'Client details inserted'
             })
         }
@@ -442,7 +442,7 @@ exports.get_client_details = (req, res) => {
         console.log(err)
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error':err                 
             })
@@ -450,7 +450,7 @@ exports.get_client_details = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
+                'code': 200,
                 "message": 'Client details',
                 "data": result
             })
@@ -466,7 +466,7 @@ exports.get_assigned_project = (req, res) => {
         console.log(err)
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error':err 
             })
@@ -474,7 +474,7 @@ exports.get_assigned_project = (req, res) => {
         }
         else {
             res.send({
-                'code': 400,
+                'code': 200,
                 "message": 'Client details',
                 "data": result
             })
@@ -482,4 +482,46 @@ exports.get_assigned_project = (req, res) => {
 
 
     })
+}
+
+exports.getReportingManager = (req,res)=>{
+    connection.query(`SELECT empFirstName,empID FROM employee WHERE is_admin = 1`, (err, result) => {
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error':err 
+            })
+
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'Reporting managers.',
+                "data": result
+            })
+        }
+    })
+     
+}
+
+exports.getTeamForProject = (req,res)=>{
+    connection.query(`SELECT empFirstName,empID FROM employee WHERE is_admin = 0 AND status = 0`, (err, result) => {
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error':err 
+            })
+
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'Reporting managers.',
+                "data": result
+            })
+        }
+    })
+     
 }
