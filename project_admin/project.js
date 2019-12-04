@@ -348,7 +348,7 @@ exports.update_project = (req, res) => {
 
 exports.listProject = (req, res) => {
 
-    var query = `SELECT employee_id,project_name,empFirstName FROM project,project_team,employee WHERE project.id= project_team.project_id AND project_team.employee_id = employee.empID AND employee.empID='${req.user.employee_id}' `
+    var query = `SELECT employee_id,project_name,empFirstName FROM project,project_team,employee WHERE project.id= project_team.project_id AND project_team.employee_id = employee.empID AND employee.empID='${req.user.empID}' `
     connection.query(query, (err, result) => {
         if (err) {
             res.send({
