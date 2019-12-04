@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Dashboard = require("../dashboard/dashboard")
+var Dashboard = require("../controllers/dashboard")
 var middleware = require("../middleware/middleware")
 
 router.get("/AllCounts", middleware.checkToken,Dashboard.AllCounts)
