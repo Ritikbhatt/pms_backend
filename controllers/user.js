@@ -3,7 +3,7 @@ var connection = require("../config/config")
 
 exports.allUsersList = function (req, res) {
 
-    connection.query("SELECT empID,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj FROM employee   ", function (err, result, fields) {
+    connection.query("SELECT empID,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj FROM employee ORDER BY DATE(created_date) DESC ", function (err, result, fields) {
         if (err) {
             res.send({
                 "code": 202,
