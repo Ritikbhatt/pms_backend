@@ -274,7 +274,7 @@ exports.update_project = (req, res) => {
 
     var obj = {
         'project_billing_method_id': req.body.project_billing_method_id,
-        'project_model': req.body.project_model,
+        'project_model': req.body.project_model?req.body.project_model :'Scrum',
         'project_code': project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
