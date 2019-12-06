@@ -3,6 +3,7 @@ let utils=require('../utils/utitlity')
 
 exports.add_project_task = (req, res) => {
     let date = new Date();
+ 
     let obj = {
         'project_id': req.body.project_id ? req.body.project_id : 0,
         'task_name': req.body.task_name ? req.body.task_name : '',
@@ -14,7 +15,7 @@ exports.add_project_task = (req, res) => {
         'start_date': utils.date(req.body.start_date),
         'end_date': utils.date(req.body.end_date),
         'estimated_time_second': req.body.estimated_time_second,
-        'actual_time_second': req.body.actual_time_second,
+        'actual_time_second': req.body.actual_time_second ?req.body.actual_time_second:req.body.estimated_time_second,
         'task_document': req.body.task_document,
         'created_date': date,
         'modified_date': date,
