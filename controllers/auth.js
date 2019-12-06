@@ -4,12 +4,13 @@ let jwt = require('jsonwebtoken');
 let config = require('../config/config');
 let middleware = require('../middleware/middleware');
 let config1 = require("../config/config1")
-
+let utils=require('../utils/utitlity')
 
 
 exports.addUser = function (req, res) {
     // console.log("req",req.body);
     var today = new Date();
+   
     var users = {
         "empFirstName": req.body.empFirstName,
         "middle_name": req.body.middle_name,
@@ -19,7 +20,7 @@ exports.addUser = function (req, res) {
         "empemail ": req.body.empemail,
         "password": req.body.password,
         "mobile_no ": req.body.mobile_no,
-        "dob ": req.body.dob,
+        "dob ": utils.date(req.body.dob),
         "doj": req.body.doj,
         "created_date": today,
 
