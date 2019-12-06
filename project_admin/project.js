@@ -111,11 +111,12 @@ exports.add_project = (req,res) =>{
 
 
 exports.add_project = (req, res) => {
+    var date =new Date();
     var obj = {
 
         'project_billing_method_id': req.body.project_billing_method_id,
         'project_model': req.body.project_model,
-        'project_code': req.body.project_code,
+        'project_code': project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
         'project_start_date': req.body.project_start_date,
