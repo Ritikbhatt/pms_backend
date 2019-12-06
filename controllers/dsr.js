@@ -10,81 +10,72 @@ exports.submitDsr = (req, res) => {
         'created_date': date,
         'modified_date': date
     }
-    // connection.query(`SELECT project_task_status_id FROM project_task where project_id ="${req.body.project_id}"`, (err, result) => {
 
-    //     if (err) {
-    //         res.send({
-    //             "code": 404,
-    //             "message": "error occured",
-    //             'error': err
+    console.log("not hello dude")
 
-    //         })
-    //     }
+    var query1 = `INSERT  INTO  project_dsr SET ?`
 
-    //     else {
 
-       //     console.log("hello dude", result[0].project_task_status_id)
-     //       if (result[0].project_task_status_id == 1 || result[0].project_task_status_id == 2 || result[0].project_task_status_id == 3) {
-                console.log("not hello dude")
+    if (err) {
+        res.send({
+            "code": 404,
+            "message": "error occured",
+            'error': err
 
-                var query1 = ` INSERT  INTO  project_dsr SET ?`
-
+        })
+    }
+    else {
+        var str = req.body.project_id;
+        console.log(str)
+        var temp = JSON.parse(str);
+        let data;
+        if (temp.length > 0) {
+            for (let i = 0; i < temp.length; i++) {
                 connection.query(query1, dsr, (err, dsr) => {
+                    var obj = {
+                        'project_id': temp[i],
+                        'project_task_id': req.body.project_task_id,
+                        'employee_id': req.user.empID,
+                        'project_dsr_id': dsr.insertId,
+                        'comment': req.body.comment,
+                        'created_date': date,
+                        'modified_date': date,
+                        'used_second': req.body.used_second,
+                        'is_active': req.body.is_active
 
-                    if (err) {
-                        res.send({
-                            "code": 404,
-                            "message": "error occured",
-                            'error': err
-
-                        })
                     }
-                    else {
-                        var obj = {
-                            'project_id': req.body.project_id,
-                            'project_task_id': req.body.project_task_id,
-                            'employee_id': req.user.empID,
-                            'project_dsr_id': dsr.insertId,
-                            'comment': req.body.comment,
-                            'created_date': date,
-                            'modified_date': date,
-                            'used_second': req.body.used_second,
-                            'is_active': req.body.is_active
+                    var query = `INSERT  INTO project_comment SET ?`
+                    connection.query(query, obj, (err, results) => {
+                        console.log(err)
+                        if (err) {
+                            res.send({
+                                "code": 404,
+                                "message": "error occured",
+                                'error': err
+
+                            })
 
                         }
-                        var query = `INSERT  INTO project_comment SET ?`
-                        connection.query(query, obj, (err, results) => {
-                            console.log(err)
-                            if (err) {
-                                res.send({
-                                    "code": 404,
-                                    "message": "error occured",
-                                    'error': err
-
-                                })
-
-                            }
-                            else {
-                                res.send({
-                                    'code': 200,
-                                    "message": 'Client details',
-                                    "data": results
-                                })
-                            }
+                        else {
+                            res.send({
+                                'code': 200,
+                                "message": 'Client details',
+                                "data": results
+                            })
+                        }
 
 
-                        })
-                    }
+                    })
 
                 })
             }
-            // else {
-            //     res.send({
-            //         "code": 404,
-            //         "message": "cannot send dsr"
-            //     })
-            // }
-        
+        }
+    }
+
+
+}
+
+
 
 
 

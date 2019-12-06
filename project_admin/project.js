@@ -371,7 +371,6 @@ exports.listProject = (req, res) => {
 
 }
 
-
 exports.project_clients = (req, res) => {
     let date = new Date();
     let obj = {

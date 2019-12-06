@@ -27,16 +27,16 @@ exports.add_project_task = (req, res) => {
         console.log(err, "ritik")
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
 
             })
         }
         else {
             res.send({
-                'code': 400,
-                "message": 'get the results as..',
+                'code': 200,
+                "message": 'Task inserted sucessfully',
                 'data': result
             })
         }
@@ -44,15 +44,14 @@ exports.add_project_task = (req, res) => {
 }
 
 
+exports.getEmployeeProjects = (req, res) => {
 
-exports.project_task_view = (req, res) => {
-
-    var query = `SELECT employee_id,project_name FROM project,project_team,project_task WHERE project.id= project_team.project_id AND project_team.project_id = project_task.project_id `
+    var query = `SELECT project.id,project.project_name FROM project_team,project WHERE project_team.employee_id = '${req.user.empID}' AND project_team.project_id = project.id`
     connection.query(query, (err, result) => {
         console.log(err, "abdad")
         if (err) {
             res.send({
-                "code": 202,
+                "code": 404,
                 "message": "error occured",
                 'error': err
             })
@@ -60,8 +59,8 @@ exports.project_task_view = (req, res) => {
         else {
             console.log(result)
             res.send({
-                'code': 400,
-                "message": 'Project Task With Associated Employee',
+                'code': 200,
+                "message": 'All Employee Projects retrieved.',
                 'data': result
             })
         }
@@ -71,74 +70,74 @@ exports.project_task_view = (req, res) => {
 
 }
 
-exports.project_task_priority=(req,res)=>{
-   var query =`SELECT id,task_priority FROM project_task_priority `
-   connection.query(query, (err, result) => {
-    console.log(err, "abdad")
-    if (err) {
-        res.send({
-            "code": 202,
-            "message": "error occured",
-            'error': err
-        })
-    }
-    else {
-        console.log(result)
-        res.send({
-            'code': 400,
-            "message": 'Project Task With Associated Employee',
-            'data': result
-        })
-    }
-
-})
-
-}
-
-
-exports.project_task_status=(req,res)=>{
- var query =`SELECT id,task_status FROM project_task_status`
- connection.query(query, (err, result) => {
-    console.log(err, "abdad")
-    if (err) {
-        res.send({
-            "code": 202,
-            "message": "error occured",
-            'error': err
-        })
-    }
-    else {
-        console.log(result)
-        res.send({
-            'code': 400,
-            "message": 'project task status Details',
-            'data': result
-        })
-    }
-
-})
-}
-
-
-exports.project_module=(req,res)=>{
-    var query =`SELECT id,project_module FROM project_module`
+exports.getProjectTaskPriority = (req, res) => {
+    var query = `SELECT id,task_priority FROM project_task_priority `
     connection.query(query, (err, result) => {
-       console.log(err, "abdad")
-       if (err) {
-           res.send({
-               "code": 202,
-               "message": "error occured",
-               'error': err
-           })
-       }
-       else {
-           console.log(result)
-           res.send({
-               'code': 400,
-               "message": 'project module details',
-               'data': result
-           })
-       }
-   
-   })
-   }
+        console.log(err, "abdad")
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error': err
+            })
+        }
+        else {
+            console.log(result)
+            res.send({
+                'code': 200,
+                "message": 'Project Task With Associated Employee',
+                'data': result
+            })
+        }
+
+    })
+
+}
+
+
+exports.getProjectTaskStatus = (req, res) => {
+    var query = `SELECT id,task_status FROM project_task_status`
+    connection.query(query, (err, result) => {
+        console.log(err, "abdad")
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error': err
+            })
+        }
+        else {
+            console.log(result)
+            res.send({
+                'code': 200,
+                "message": 'project taskStatus',
+                'data': result
+            })
+        }
+
+    })
+}
+
+
+exports.getProjectModule = (req, res) => {
+    var query = `SELECT id,project_module FROM project_module`
+    connection.query(query, (err, result) => {
+        console.log(err, "abdad")
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error': err
+            })
+        }
+        else {
+            console.log(result)
+            res.send({
+                'code': 200,
+                "message": 'projectModule ',
+                'data': result
+            })
+        }
+
+    })
+}
