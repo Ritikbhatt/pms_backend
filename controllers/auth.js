@@ -19,9 +19,9 @@ exports.addUser = function (req, res) {
         "martial_status": req.body.martial_status,
         "empemail": req.body.empemail,
         "password": req.body.password,
-        "mobile_no ": req.body.mobile_no,
+        "mobile_no": req.body.mobile_no,
         "dob": utils.date(req.body.dob),
-        "doj": req.body.doj,
+        "doj": utils.date(req.body.doj),
         "created_date": today,
 
     }

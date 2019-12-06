@@ -11,8 +11,8 @@ exports.add_project_task = (req, res) => {
         'project_task_priority_id': req.body.project_task_priority_id,
         'project_task_status_id': req.body.project_task_status_id,
         'percentage_complete': req.body.percentage_complete,
-        'start_date': req.body.start_date,
-        'end_date': req.body.end_date,
+        'start_date': utils.date(req.body.start_date),
+        'end_date': utils.date(req.body.end_date),
         'estimated_time_second': req.body.estimated_time_second,
         'actual_time_second': req.body.actual_time_second,
         'task_document': req.body.task_document,
@@ -111,10 +111,34 @@ exports.project_task_status=(req,res)=>{
         console.log(result)
         res.send({
             'code': 400,
-            "message": 'Project Task With Associated Employee',
+            "message": 'project task status Details',
             'data': result
         })
     }
 
 })
 }
+
+
+exports.project_module=(req,res)=>{
+    var query =`SELECT id,project_module FROM project_module`
+    connection.query(query, (err, result) => {
+       console.log(err, "abdad")
+       if (err) {
+           res.send({
+               "code": 202,
+               "message": "error occured",
+               'error': err
+           })
+       }
+       else {
+           console.log(result)
+           res.send({
+               'code': 400,
+               "message": 'project module details',
+               'data': result
+           })
+       }
+   
+   })
+   }

@@ -77,8 +77,8 @@ exports.update = function (req, res) {
                 empemail: req.body.empemail,
                 password: req.body.password,
                 mobile_no: req.body.mobile_no,
-                dob: req.body.dob,
-                doj: req.body.doj,
+                dob: utils.date(req.body.dob),
+                doj: utils.date(req.body.doj),
                 created_date: date,
 
             }

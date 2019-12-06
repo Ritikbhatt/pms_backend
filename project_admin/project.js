@@ -1,11 +1,9 @@
 var connection = require("../config/config");
 var CodeGenerator = require('node-code-generator');
-var generator = new CodeGenerator();
-var pattern = 'A-####';
-var howMany = 1;
-var options = {};
+let utils=require('../utils/utitlity')
+
 // Generate an array of random unique project_code according to the provided pattern:
-var project_code = generator.generateCodes(pattern, howMany, options);
+
 
 
 
@@ -116,11 +114,11 @@ exports.add_project = (req, res) => {
 
         'project_billing_method_id': req.body.project_billing_method_id,
         'project_model': req.body.project_model?req.body.project_model :'Scrum',
-        'project_code': project_code,
+        'project_code': req.body.project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
-        'project_start_date': req.body.project_start_date,
-        'project_end_date': req.body.project_end_date,
+        'project_start_date': utils.date(req.body.project_start_date),
+        'project_end_date':  utils.date(req.body.project_end_date),
         'project_priority_id': req.body.project_priority_id,
         'project_status_id': req.body.project_status_id,
         'percentage_complete': req.body.percentage_complete,
@@ -275,11 +273,11 @@ exports.update_project = (req, res) => {
     var obj = {
         'project_billing_method_id': req.body.project_billing_method_id,
         'project_model': req.body.project_model?req.body.project_model :'Scrum',
-        'project_code': project_code,
+        'project_code': req.body.project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
-        'project_start_date': req.body.project_start_date,
-        'project_end_date': req.body.project_end_date,
+        'project_start_date': utils.date(req.body.project_start_date),
+        'project_end_date': utils.date(req.body.project_end_date),
         'project_priority_id': req.body.project_priority_id,
         'project_status_id': req.body.project_status_id,
         'percentage_complete': req.body.percentage_complete,
@@ -384,8 +382,8 @@ exports.project_clients = (req, res) => {
         'project_client_type_id': req.body.project_client_type_id,
         'client_location': req.body.client_location,
         'country_name': req.body.country_name,
-        'start_date': req.body.start_date,
-        'end_date': req.body.end_date,
+        'start_date': utils.date(req.body.start_date),
+        'end_date': utils.date(req.body.end_date),
         'client_url': req.body.client_url,
         'employee_designation_id': req.body.employee_designation_id,
         'created_date': date,

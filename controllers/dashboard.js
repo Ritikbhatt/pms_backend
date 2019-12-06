@@ -124,7 +124,7 @@ group by L.id `
 
                 else {
 
-                    let data = { "holiday": result, "optional_leave": array, "Allowed leave": results }
+                    let data = {"holiday": result, "optional_leave": array, "Allowed leave": results}
                     res.send({
                         "code": 200,
                         "message": "list of all holidays",
