@@ -86,7 +86,7 @@ exports.employee_attendance = function (req, res) {
 exports.HolidaysList = function (req, res) {
 
     let array = [];
-    var query = (`SELECT holiday_name,holiday_start_date,no_of_day,is_optional_leave FROM holiday WHERE  DATE(holiday_start_date)  ASC`)
+    var query = (`SELECT holiday_name,holiday_start_date,no_of_day,is_optional_leave FROM holiday ORDER BY DATE(holiday_start_date) ASC`)
     connection.query(query, (err, result) => {
         console.log(err)
         if (err) {
