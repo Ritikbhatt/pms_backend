@@ -9,3 +9,4 @@ router.get("/employeeAttendance", middleware.checkToken,Dashboard.employee_atten
 router.get("/upcomingBirthday", middleware.checkToken,Dashboard.upcomingBirthDay)
 // router.post("/insert", middleware.checkToken,Dashboard.insert)
 module.exports = router;
+
