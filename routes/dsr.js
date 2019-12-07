@@ -7,4 +7,6 @@ router.post("/submitDsr", middleware.checkToken, dsr.submitDsr);
 router.get("/getDsrList", middleware.checkToken, dsr.getDsrList);
 router.post("/getDsrById", middleware.checkToken, dsr.getDsrById);
 router.get("/getDsrDates", middleware.checkToken, dsr.getDsrDates);
+router.get("/getDsrByStatus", middleware.checkToken, dsr.getDsrByStatus);
+
 module.exports = router;
