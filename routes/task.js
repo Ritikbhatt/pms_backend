@@ -7,4 +7,7 @@ router.get("/getProjectTaskPriority", middleware.checkToken, project.getProjectT
 router.get("/getProjectTaskStatus", middleware.checkToken, project.getProjectTaskStatus)
 router.get("/getEmployeeProjects", middleware.checkToken, project.getEmployeeProjects)
 router.get("/getProjectModule", middleware.checkToken, project.getProjectModule)
+router.get("/getAllTaskList", middleware.checkToken, project.getAllTaskList)
+router.get("/allPendingTasks", middleware.checkToken, project.allPendingTasks)
+router.get("/allTaskDsr", middleware.checkToken, project.allTaskDsr)
 module.exports = router;
