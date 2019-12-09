@@ -21,26 +21,31 @@ exports.submitDsr = (req, res) => {
             })
         }
         else {
-            var project = req.body.project_id;
-            var projectID =   JSON.parse(project);
-            var projectTask = req.body.projectTaskId;
-            var  projectTaskId =JSON.parse(projectTask);
+        
              var commen = req.body.comment;
-             var comment =JSON.parse(commen);
-        console.log("wjefbewjbf",typeof projectID )
-            if (projectID.length > 0) {
-                for (let i=0; i < projectID.length; i++) {
-                    for(let j=0;j<projectTaskId.length;j++){
+             console.log(typeof(commen),"riitk")
+           var comment = JSON.parse(commen)
+           console.log(comment[0],"monkeyMan")
+             var projec =  req.body.project_id;
+                  var  project = JSON.parse(projec)
+                  console.log(project[0])
+             var tas =  req.body.project_task_id;
+             var  task = JSON.parse(tas)
+         console.log(comment)
+           
+            if (comment.length > 0) {
+                
                         for(let k=0;k<comment.length;k++){
-                            if(i==j&&j==k&&i==k){
+                            
+                     console.log("bdjsabdkjsabdkasdsabkdjbas",req.body.project_id)
                     var obj = {
-                        'project_id': projectID[i],
-                        'project_task_id': projectTaskId[j],
+                        'project_id': project[k],
+                        'project_task_id': task[k],
                         'employee_id': req.user.empID,
                         'project_dsr_id': dsr.insertId,
                         'comment': comment[k],
-                        'created_date': date,
-                        'modified_date': date,
+                        'created_date':date,
+                        'modified_date':date,
                         'used_second': req.body.used_second,
                         'is_active': req.body.is_active
 
@@ -58,11 +63,32 @@ exports.submitDsr = (req, res) => {
 
                         }
                         else {
+                            var obj={
+                                'project_task_status_id':req.body.project_task_status_id
+                                 
+                            }
+                            console.log(task[k],"balaaabalbabal")
+                      var query = `UPDATE project_task SET ? WHERE project_task.id= '${task[k]}' `
+                      connection.query(query,obj, (err, result) => {
+
+                        if (err) {
+                            res.send({
+                                "code": 404,
+                                "message": "error occured",
+                                'error': err
+                
+                            })
+                
+                        }
+                        else {
                             res.send({
                                 'code': 200,
-                                "message": 'Client details',
-                                "data": results
+                                "message": 'DSR inserted',
+                                'data': result
                             })
+                        }
+                    })
+                            
                         }
 
 
@@ -70,9 +96,9 @@ exports.submitDsr = (req, res) => {
 
                 }
 
-              }
-              }
-            }
+              
+            
+            
             }
         }
     })
@@ -183,7 +209,7 @@ exports.getDsrDates = (req, res) => {
 // get dsr by status completed vale jo h
 
 exports.getDsrByStatus =(req,res)=>{
-  var query =`SELECT project_name,project.id,task_name,project_task.id FROM project_task,project,project_team,project_task_status WHERE project_task.project_id= project_team.project_id AND project_team.employee_id ='${req.user.empID}'AND project_task_status.id<=3 `
+  var query =`SELECT project_name,task_name,project.id AS projectID , project_task.id AS projectTaskID FROM project,project_task,project_task_status,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.project_id= project_task.project_id AND project_team.employee_id = '${req.user.empID}'  AND project_task_status.id =project_task.project_task_status_id AND project_task_status.id<=3 `
 connection.query(query,(err,result)=>{
   if (err) {
     res.send({
