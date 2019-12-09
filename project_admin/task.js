@@ -147,7 +147,7 @@ exports.getProjectModule = (req, res) => {
 //project , task,task description,prority, date, document ,status,created , operation.
 exports.getAllTaskList = (req, res) => {
 
-    let query = `SELECT project_name,task_name,task_description,task_status,task_priority,start_date,end_date,task_document,DATE(project_task.created_date) AS date FROM project,project_task,project_task_status,project_task_priority,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.employee_id = '${req.user.empID}'`
+    let query = `SELECT project_name,task_name,task_description,task_status,task_priority,start_date,end_date,task_document,DATE(project_task.created_date) AS date FROM project,project_task,project_task_status,project_task_priority,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.employee_id = '${req.user.empID}' AND project_task_priority.id = project_task.project_task_priority_id AND project_task_status.id =project_task.project_task_status_id`
 
     connection.query(query, (err, result) => {
 
@@ -178,7 +178,7 @@ exports.getAllTaskList = (req, res) => {
 
 exports.allPendingTasks = (req, res) => {
 
-    var query = `SELECT project_name,task_name,task_description,task_status,task_priority,start_date,end_date,task_document,DATE(project_task.created_date) AS date FROM project,project_task,project_task_status,project_task_priority,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.employee_id = '${req.user.empID}'  AND project_task_status.id<=3`
+    var query = `SELECT project_name,task_name,task_description,task_status,task_priority,start_date,end_date,task_document,DATE(project_task.created_date) AS date FROM project,project_task,project_task_status,project_task_priority,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.employee_id = '${req.user.empID}' AND project_task_priority.id = project_task.project_task_priority_id AND project_task_status.id =project_task.project_task_status_id AND project_task_status.id<=3`
     connection.query(query, (err, result) => {
 
         console.log(err, "abdad")
