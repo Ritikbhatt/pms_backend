@@ -9,4 +9,5 @@ router.post("/getDsrById", middleware.checkToken, dsr.getDsrById);
 
 router.get("/getDsrByStatus", middleware.checkToken, dsr.getDsrByStatus);
 
+router.get("/checkTodaysDsr", middleware.checkToken, dsr.checkTodaysDsr);
 module.exports = router;

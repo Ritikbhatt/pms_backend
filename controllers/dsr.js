@@ -189,7 +189,7 @@ exports.getDsrByStatus = (req, res) => {
 }
 
 
-
+ 
 exports.submitDsr = (req, res) => {
     var date = new Date();
     var dsr = {
@@ -199,8 +199,11 @@ exports.submitDsr = (req, res) => {
         'created_date': date,
         'modified_date': date
     }
+    console.log("hello")
     var query1 = `INSERT  INTO  project_dsr SET ?`
+  
     connection.query(query1, dsr, (err, dsr) => {
+       
         if (err) {
             res.send({
                 "code": 404,
@@ -211,23 +214,25 @@ exports.submitDsr = (req, res) => {
         }
         else {
 
-            for (let i = 0; i < req.body.length; i++) {
-                console.log(typeof (req.body), "ritikbhayy", req.body.length)
+            console.log(typeof (req.body), "ritikbhayy", req.body.dsrArr)
+            for (let i = 0; i < req.body.dsrArr.length; i++) {
+                
 
                 var obj = {
-                    'project_id': req.body[i].project_id,
-                    'project_task_id': req.body[i].project_task_id,
+                    'project_id': req.body.dsrArr[i].project_id,
+                    'project_task_id': req.body.dsrArr[i].project_task_id,
                     'employee_id': req.user.empID,
                     'project_dsr_id': dsr.insertId,
-                    'comment': req.body[i].comment,
+                    'comment': req.body.dsrArr[i].comment,
                     'created_date': date,
                     'modified_date': date,
-                    'used_second': req.body[i].used_second,
-                    'is_active': req.body[i].is_active ? req.body[i].is_active : 1
+                    'used_second': req.body.dsrArr[i].task_hours,
+                    'is_active': req.body.dsrArr[i].is_active ? req.body.dsrArr[i].is_active : 1
 
                 }
                 var query = `INSERT  INTO project_comment SET ?`
                 connection.query(query, obj, (err, results) => {
+                    console.log("hello123",err,results)
                     console.log(err)
                     if (err) {
                         res.send({
@@ -240,11 +245,11 @@ exports.submitDsr = (req, res) => {
                     }
                     else {
                         var obj = {
-                            'project_task_status_id': req.body[i].project_task_status_id
+                            'project_task_status_id': req.body.dsrArr[i].project_task_status_id
 
                         }
 
-                        var query = `UPDATE project_task SET ? WHERE project_task.id= '${req.body[i].project_task_id}' `
+                        var query = `UPDATE project_task SET ? WHERE project_task.id= '${req.body.dsrArr[i].project_task_id}' `
                         connection.query(query, obj, (err, result) => {
 
                             if (err) {
@@ -259,7 +264,7 @@ exports.submitDsr = (req, res) => {
                             else {
                                 res.send({
                                     'code': 200,
-                                    "message": 'DSR inserted',
+                                    "message": 'DSR has been submitted successfully.',
                                     'data': result
                                 })
                             }
@@ -274,4 +279,29 @@ exports.submitDsr = (req, res) => {
         }
 
     })
+}
+
+
+exports.checkTodaysDsr=(req,res)=>{
+  
+ var query =`select comment FROM project_comment WHERE DATE(created_date)=CURDATE()`;
+  connection.query(query, (err, result) => {
+  if (err) {
+    res.send({
+        "code": 404,
+        "message": "error occured",
+        'error': err
+
+    })
+
+}
+else {
+    res.send({
+        'code': 200,
+        "message": 'Todays dsr details',
+        'data': result.length > 0 ? true : false
+    })
+}
+})
+
 }
