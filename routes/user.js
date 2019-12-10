@@ -12,3 +12,4 @@ router.post("/update", middleware.checkToken, userController.update)
 router.get("/getEmployeeDetails", middleware.checkToken, userController.getEmployeeDetails)
 router.get('/singleEmployeeDetails',middleware.checkToken,userController.getSingleEmployeeDetails)
 module.exports = router;
+
