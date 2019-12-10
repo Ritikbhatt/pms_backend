@@ -306,3 +306,27 @@ else {
 })
 
 }
+// Project	Task	DSR	Used Hr	Task Status
+exports.getDsrDetails=(req,res)=>{
+ var query =`SELECT project_name,task_name,comment,used_second,task_status FROM project,project_task,project_comment,project_task_status WHERE  project_task.project_id = project.id AND project_comment.project_id =project.id AND project_comment.project_id=project_task.project_id AND project_comment.employee_id="${req.user.empID}" AND DATE(project_comment.created_date)="${req.body.date}" AND project_task_status.id = project_task.project_task_status_id`
+
+ connection.query(query, (err, result) => {
+    if (err) {
+      res.send({
+          "code": 404,
+          "message": "Something went wrong",
+          'error': err
+  
+      })
+  
+  }
+  else {
+      res.send({
+          'code': 200,
+          "message": 'dsr details retrieved sucessfully ',
+          'data': result
+      })
+  }
+  })
+
+}

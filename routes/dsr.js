@@ -8,4 +8,5 @@ router.get("/getDsrList", middleware.checkToken, dsr.getDsrList);
 router.post("/getDsrById", middleware.checkToken, dsr.getDsrById);
 router.get("/getDsrByStatus", middleware.checkToken, dsr.getDsrByStatus);
 router.get("/checkTodaysDsr", middleware.checkToken, dsr.checkTodaysDsr);
+router.post("/getDsrDetails", middleware.checkToken, dsr.getDsrDetails);
 module.exports = router;
