@@ -7,7 +7,7 @@ exports.allUsersList = function (req, res) {
         if (err) {
             res.send({
                 "code": 202,
-                "message": "error occured"
+                "message": "Something went wrong"
 
             })
         }
@@ -31,14 +31,14 @@ exports.singleUserlist = function (req, res) {
             // console.log("error ocurred",error);
             res.send({
                 "code": 400,
-                "failed": "error ocurred"
+                "failed": "Something went wrong"
             })
 
         }
         else {
             res.send({
                 "code": 200,
-                "message": "List Of Users",
+                "message": "List Of Users retrieved",
                 "data": results
             })
 
@@ -57,7 +57,7 @@ exports.update = function (req, res) {
             // console.log("error ocurred",error);
             res.send({
                 "code": 400,
-                "failed": "error ocurred"
+                "failed": "Something went wrong"
             })
 
         }
@@ -91,7 +91,7 @@ exports.update = function (req, res) {
                 if (err) {
                     res.send({
                         "code": 202,
-                        "message": "there is an error",
+                        "message": "Something went wrong",
                         "data": err
 
                     })
@@ -100,10 +100,10 @@ exports.update = function (req, res) {
                 else {
                     connection.query("SELECT empID,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj FROM employee  WHERE  empID = ?", [req.body.empID], function (error, result, fields) {
                         if (error) {
-                            // console.log("error ocurred",error);
+                     
                             res.send({
                                 "code": 400,
-                                "failed": "error ocurred"
+                                "failed": "Something went wrong"
                             })
 
                         }
@@ -115,7 +115,7 @@ exports.update = function (req, res) {
                             if (oldData === newOne) {
                                 res.send({
                                     "code": 202,
-                                    "message": "you cannot send data no more"
+                                    "message": "Data Already exists"
                                 })
 
                             }
@@ -133,20 +133,20 @@ exports.update = function (req, res) {
 
                                 connection.query('INSERT INTO history_management SET ?', user, function (error, results, fields) {
 
-                                    console.log(user, "here are the results generated");
+                           
                                     //  connection.query('INSERT INTO history_management SET ?',users,function(err,results){
                                     if (err) {
                                         console.log("error ocurred", err);
                                         res.send({
                                             "code": 400,
-                                            "message": "error ocurred",
+                                            "message": "Something went wrong",
                                             "err": error
                                         })
                                     } else {
-                                        console.log("bhalu", results);
+                                
                                         res.send({
                                             "code": 200,
-                                            "message": "user Updated sucessfully",
+                                            "message": "User Updated sucessfully",
                                             "data": results
                                         });
                                     }
@@ -173,7 +173,7 @@ exports.getEmployeeDetails = function (req, res) {
     let query = "SELECT empID,employee_id,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj,company_name,experience_from,experience_to,experience_technology,description  FROM employee,employee_experience WHERE employee.empID=employee_experience.employee_id "
     connection.query(query, function (err, results) {
         console.log(err, "here is the error")
-        //   let j =JSON.parse(results[0])
+      
         if (err) {
             console.log("error ocurred", err);
             res.send({
@@ -184,7 +184,7 @@ exports.getEmployeeDetails = function (req, res) {
         } else {
             let js = results[0].experience_technology;
             let rs = JSON.stringify(js)
-            console.log("bhalu", results);
+       
             res.send({
                 "code": 200,
                 "message": "getting table data",
@@ -204,19 +204,17 @@ exports.getSingleEmployeeDetails = function (req, res) {
 
     let query = "SELECT empID,employee_id,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj,company_name,experience_from,experience_to,experience_technology,description  FROM employee,employee_experience WHERE employee.empID=employee_experience.employee_id "
     connection.query(query, function (err, results) {
-        console.log(err, "here is the error")
-        //   let j =JSON.parse(results[0])
+
         if (err) {
-            console.log("error ocurred", err);
             res.send({
                 "code": 400,
-                "message": "error ocurred",
+                "message": "Something went wrong",
                 "err": err
             })
         } else {
             let js = results[0].experience_technology;
             let rs = JSON.stringify(js)
-            console.log("bhalu", results);
+    
             res.send({
                 "code": 200,
                 "message": "getting table data",

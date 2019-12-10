@@ -115,7 +115,7 @@ exports.getDsrById = (req, res) => {
         if (err) {
             res.send({
                 "code": 404,
-                "message": "error occured",
+                "message": "Something went wrong",
                 'error': err
 
             })
@@ -140,7 +140,7 @@ exports.getDsrList = (req, res) => {
         if (err) {
             res.send({
                 "code": 404,
-                "message": "error occured",
+                "message": "Something went wrong",
                 'error': err
 
             })
@@ -171,7 +171,7 @@ exports.getDsrByStatus = (req, res) => {
         if (err) {
             res.send({
                 "code": 404,
-                "message": "error occured",
+                "message": "Something went wrong",
                 'error': err
 
             })
@@ -207,7 +207,7 @@ exports.submitDsr = (req, res) => {
         if (err) {
             res.send({
                 "code": 404,
-                "message": "error occured",
+                "message": "Error while submitting dsr",
                 'error': err
 
             })
@@ -232,12 +232,12 @@ exports.submitDsr = (req, res) => {
                 }
                 var query = `INSERT  INTO project_comment SET ?`
                 connection.query(query, obj, (err, results) => {
-                    console.log("hello123",err,results)
+                    
                     console.log(err)
                     if (err) {
                         res.send({
                             "code": 404,
-                            "message": "error occured",
+                            "message": "Error while submitting dsr",
                             'error': err
 
                         })
@@ -255,18 +255,14 @@ exports.submitDsr = (req, res) => {
                             if (err) {
                                 res.send({
                                     "code": 404,
-                                    "message": "error occured",
+                                    "message": "Something went wrong",
                                     'error': err
 
                                 })
 
                             }
                             else {
-                                res.send({
-                                    'code': 200,
-                                    "message": 'DSR has been submitted successfully.',
-                                    'data': result
-                                })
+                                console.log("Record Saved");
                             }
                         })
 
@@ -276,6 +272,11 @@ exports.submitDsr = (req, res) => {
                 })
 
             }
+            res.send({
+                'code': 200,
+                "message": 'DSR has been submitted successfully.',
+                'data': dsr
+            })
         }
 
     })
@@ -289,7 +290,7 @@ exports.checkTodaysDsr=(req,res)=>{
   if (err) {
     res.send({
         "code": 404,
-        "message": "error occured",
+        "message": "Something went wrong",
         'error': err
 
     })
@@ -298,7 +299,7 @@ exports.checkTodaysDsr=(req,res)=>{
 else {
     res.send({
         'code': 200,
-        "message": 'Todays dsr details',
+        "message": 'Todays dsr status retrieved sucessfully ',
         'data': result.length > 0 ? true : false
     })
 }
