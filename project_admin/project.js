@@ -537,3 +537,107 @@ exports.getProjectDsr = (req, res) => {
         }
     })
 }
+
+exports.getAllProjectDetails=(req,res)=>{
+//  var query =`SELECT project_task.*,project_priority,project_status,billing_method
+//   FROM project,project_task ,project_billing_method,project_priority,project_status
+//  WHERE project.id=project_task.project_id AND
+//  project_task.project_id ="${req.body.project_id}"`
+
+
+
+
+
+ var query =`SELECT 
+ project.id
+,project_code
+,project_name
+,billing_method
+,project_status
+,project_priority
+,project_description
+,project_start_date
+,project_end_date
+,project.percentage_complete
+,risk_description
+,total_budgets  
+,reporting_to
+,project_document
+,project.created_date
+FROM project,project_billing_method,project_priority,
+project_status,project_team
+WHERE 
+project.id= project_team.project_id AND
+project.project_status_id=project_status.id AND
+project.project_priority_id=project_priority.id AND
+project.project_billing_method_id=project_billing_method.id AND
+project.id ='62' AND
+project_team.employee_id='4' `
+
+ 
+ connection.query(query, (err, result) => {
+    if (err) {
+        res.send({
+            "code": 404,
+            "message": "Something went wrong",
+            'error': err
+
+        })
+
+    }
+    else {
+        res.send({
+            'code': 200,
+            "message": 'Single project details retrieved successfully',
+            'data': result
+        })
+    }
+})
+}
+
+
+
+exports.getAllTaskDetails=(req,res)=>{
+var query =`SELECT
+project_task.task_name
+ ,project_task.task_description
+ ,project_task.percentage_complete
+ ,project_task.start_date
+ ,project_task.end_date 
+ ,project_task.task_document
+ ,project_task.created_date
+ ,task_status
+ ,task_priority
+ FROM project,project_task ,project_billing_method,project_priority,
+ project_status,project_task_priority,project_task_status,project_team
+ WHERE project.id=project_task.project_id AND 
+ project_team.project_id=project.id AND
+ project_team.project_id=project_task.project_id AND
+ project_task.project_task_priority_id=project_task_priority.id AND
+ project_task.project_task_status_id=project_task_status.id AND
+ project.project_status_id=project_status.id AND
+ project.project_priority_id=project_priority.id AND
+ project.project_billing_method_id=project_billing_method.id AND
+ project.id ='62' AND
+ project_team.employee_id='4'
+`
+
+connection.query(query, (err, result) => {
+    if (err) {
+        res.send({
+            "code": 404,
+            "message": "Something went wrong",
+            'error': err
+
+        })
+
+    }
+    else {
+        res.send({
+            'code': 200,
+            "message": 'All Task Details Retreived Successfully .',
+            'data': result
+        })
+    }
+})
+}

@@ -16,4 +16,7 @@ router.get('/getReportingManager', middleware.checkToken, project.getReportingMa
 router.get('/getTeamForProject', middleware.checkToken, project.getTeamForProject);
 
 router.post('/getProjectDsr', middleware.checkToken, project.getProjectDsr);
+router.post('/getAllProjectDetails', middleware.checkToken, project.getAllProjectDetails);
+
+router.post('/getAllTaskDetails', middleware.checkToken, project.getAllTaskDetails);
 module.exports = router;
