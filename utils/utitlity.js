@@ -43,5 +43,5 @@ var connection = require("../config/config");
     exports.date= (date)=>{
         let datee = new Date(date);
 
-         return  datee.getFullYear()+'-'+(parseInt(datee.getMonth())+1)+'-'+(parseInt(datee.getDay()))
+         return  datee.getFullYear()+'-'+(parseInt(datee.getMonth())+1)+'-'+(parseInt(datee.getDate()))
     }

@@ -191,7 +191,9 @@ exports.getDsrByStatus = (req, res) => {
 
  
 exports.submitDsr = (req, res) => {
+    
     var date = new Date();
+    console.log(utils.date(date),"riitkenwfjnwejnfew",date,"dbkwebdkbwekbdkwebdkuwe",utils.date())
     var dsr = {
         'employee_id': req.user.empID,
         'dsr_date': utils.date(date),
