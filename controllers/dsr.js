@@ -319,7 +319,7 @@ project_task.project_task_status_id=project_task_status.id
 AND project_dsr.employee_id=project_comment.employee_id
 AND project_comment.employee_id=project_dsr.employee_id
   AND project_comment.project_id=project_task.project_id 
-  AND project_dsr.employee_id="${req.user.empID}" AND project_dsr.dsr_date=DATE("${req.body.date}")`
+  AND project_dsr.employee_id="${req.user.empID}" AND project_dsr.dsr_date=DATE("${utils.date(req.body.date)}")`
 
  connection.query(query, (err, result) => {
     if (err) {
