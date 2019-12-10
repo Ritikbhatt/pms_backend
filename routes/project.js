@@ -6,7 +6,7 @@ router.post("/add_project", middleware.checkToken, project.add_project)
 router.post('/project_clients', middleware.checkToken, project.project_clients);
 router.get('/get_client', middleware.checkToken, project.get_client);
 router.get('/get_client_details', middleware.checkToken, project.get_client_details);
-router.get('/get_assigned_project', middleware.checkToken, project.get_assigned_project);
+router.get('/getAssignedProject', middleware.checkToken, project.getAssignedProject);
 router.post('/update_project', middleware.checkToken, project.update_project);
 router.get('/listProject', middleware.checkToken, project.listProject);
 router.get('/project_priority', middleware.checkToken, project.project_priority);
