@@ -311,14 +311,15 @@ else {
 // Project	Task	DSR	Used Hr	Task Status
 exports.getDsrDetails=(req,res)=>{
  
- var query =`SELECT project_name,task_name,comment,used_second,task_status
-  FROM project,project_task,project_comment,project_task_status,project_dsr
-  WHERE  project_task.project_id = project.id 
-  AND project_comment.project_id =project.id
-  AND project_comment.employee_id=project_dsr.employee_id
-   AND project_comment.project_id=project_task.project_id 
-   AND project_comment.employee_id="${req.user.empID}" AND project_dsr.dsr_date=DATE("${utils.date(req.body.date)}") 
-   AND project_task_status.id = project_task.project_task_status_id`
+ var query =`SELECT project_name,task_name, comment ,used_second,task_status
+ FROM project,project_task,project_comment,project_task_status,project_dsr
+
+WHERE project.id=project_task.project_id AND 
+project_task.project_task_status_id=project_task_status.id 
+AND project_dsr.employee_id=project_comment.employee_id
+AND project_comment.employee_id=project_dsr.employee_id
+  AND project_comment.project_id=project_task.project_id 
+  AND project_dsr.employee_id="${req.user.empID}" AND project_dsr.dsr_date=DATE("${req.body.date}")`
 
  connection.query(query, (err, result) => {
     if (err) {
