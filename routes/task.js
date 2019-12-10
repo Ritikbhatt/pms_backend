@@ -9,5 +9,5 @@ router.get("/getEmployeeProjects", middleware.checkToken, project.getEmployeePro
 router.get("/getProjectModule", middleware.checkToken, project.getProjectModule)
 router.get("/getAllTaskList", middleware.checkToken, project.getAllTaskList)
 router.get("/allPendingTasks", middleware.checkToken, project.allPendingTasks)
-router.get("/allTaskDsr", middleware.checkToken, project.allTaskDsr)
+router.post("/allTaskDsr", middleware.checkToken, project.allTaskDsr)
 module.exports = router;

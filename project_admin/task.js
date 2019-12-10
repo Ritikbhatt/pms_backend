@@ -205,7 +205,7 @@ exports.allPendingTasks = (req, res) => {
 // dsr details // dsr name,dsr date, time
 exports.allTaskDsr =(req,res)=>{
  
-    var query =`SELECT comment,DATE(project_comment.created_date) AS date ,used_second FROM project_comment,project_task WHERE project_comment.project_id= project_task.project_id AND project_comment.employee_id ='${req.user.empID}'`
+    var query =`SELECT comment,DATE(project_comment.created_date) AS date ,used_second FROM project_comment,project_task WHERE project_comment.project_id= project_task.project_id AND project_comment.employee_id ='${req.user.empID}' AND project_task.project_id ="${req.body.projectID}"`
     
     connection.query(query, (err, result) => {
     console.log(err, "abdad")
