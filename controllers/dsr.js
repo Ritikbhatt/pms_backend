@@ -317,7 +317,7 @@ exports.getDsrDetails=(req,res)=>{
   AND project_comment.project_id =project.id
   AND project_comment.employee_id=project_dsr.employee_id
    AND project_comment.project_id=project_task.project_id 
-   AND project_comment.employee_id="4" AND project_dsr.dsr_date=DATE("${utils.date(req.body.date)})" 
+   AND project_comment.employee_id="${req.user.empID}" AND project_dsr.dsr_date=DATE("${utils.date(req.body.date)}") 
    AND project_task_status.id = project_task.project_task_status_id`
 
  connection.query(query, (err, result) => {
