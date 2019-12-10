@@ -514,3 +514,26 @@ exports.getTeamForProject = (req,res)=>{
     })
      
 }
+
+
+exports.getProjectDsr = (req, res) => {
+    var query = `SELECT comment AS DSR ,comment_date,used_second AS time FROM project_comment  WHERE  project_comment.employee_id="${req.user.empID}" AND project_comment.project_id ="${req.body.project_id}"`
+    connection.query(query, (err, result) => {
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "Something went wrong",
+                'error': err
+
+            })
+
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'dsr details by status.',
+                'data': result
+            })
+        }
+    })
+}

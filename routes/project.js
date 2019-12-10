@@ -14,4 +14,6 @@ router.get('/project_status', middleware.checkToken, project.project_status);
 router.get('/project_billing_method_details', middleware.checkToken, project.project_billing_method_details);
 router.get('/getReportingManager', middleware.checkToken, project.getReportingManager);
 router.get('/getTeamForProject', middleware.checkToken, project.getTeamForProject);
+
+router.post('/getProjectDsr', middleware.checkToken, project.getProjectDsr);
 module.exports = router;
