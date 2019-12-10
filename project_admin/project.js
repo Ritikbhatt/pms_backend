@@ -571,8 +571,8 @@ project.id= project_team.project_id AND
 project.project_status_id=project_status.id AND
 project.project_priority_id=project_priority.id AND
 project.project_billing_method_id=project_billing_method.id AND
-project.id ='62' AND
-project_team.employee_id='4' `
+project.id ='${req.body.project_id}' AND
+project_team.employee_id='${req.user.empID}' `
 
  
  connection.query(query, (err, result) => {
@@ -588,7 +588,7 @@ project_team.employee_id='4' `
     else {
         res.send({
             'code': 200,
-            "message": 'Single project details retrieved successfully',
+            "message": 'project details retrieved successfully',
             'data': result
         })
     }
@@ -618,8 +618,8 @@ project_task.task_name
  project.project_status_id=project_status.id AND
  project.project_priority_id=project_priority.id AND
  project.project_billing_method_id=project_billing_method.id AND
- project.id ='62' AND
- project_team.employee_id='4'
+ project.id ='${req.body.project_id}' AND
+ project_team.employee_id='${req.user.empID}'
 `
 
 connection.query(query, (err, result) => {
