@@ -217,11 +217,17 @@ exports.allTaskDsr =(req,res)=>{
         })
     }
     else {
-        console.log(result)
+        let sum=0
+        for(let i=0;i<result.length;i++){
+         sum +=result[i].used_second
+        
+        }
+        console.log(result.length,"booom boom roboya")
+        let obj={"tasks":result,"totalHours":sum}
         res.send({
             'code': 200,
             "message": 'ALL Dsr Task retreived ',
-            'data': result
+            'data': obj
         })
     }
 
