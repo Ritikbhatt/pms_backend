@@ -166,7 +166,7 @@ exports.getDsrList = (req, res) => {
 // get dsr by status completed vale jo h
 
 exports.getDsrByStatus = (req, res) => {
-    var query = `SELECT project_name,task_name,project.id AS projectID , project_task.id AS projectTaskID, project_task_status_id FROM project,project_task,project_task_status,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.project_id= project_task.project_id AND project_team.employee_id = '${req.user.empID}'  AND project_task_status.id =project_task.project_task_status_id AND project_task_status.id<=3 `
+    var query = `SELECT project_name,task_name,project.id AS projectID , project_task.id AS projectTaskID, project_task_status_id,task_status FROM project,project_task,project_task_status,project_team  WHERE  project_task.project_id= project.id  AND project_team.project_id = project.id AND project_team.project_id= project_task.project_id AND project_team.employee_id = '${req.user.empID}'  AND project_task_status.id =project_task.project_task_status_id AND project_task_status.id<=3 `
     connection.query(query, (err, result) => {
         if (err) {
             res.send({
@@ -315,10 +315,11 @@ else {
 
 exports.getDsrDetails=(req,res)=>{
  
- var query =`SELECT project_name,task_name,comment
+ var query =`SELECT project_name,task_name,comment,used_second,task_status
  FROM project,project_task,project_task_status,project_comment 
- WHERE  project_task.project_id= project.id  
+ WHERE  project_task.project_id= project.id
  AND project_comment.project_id = project.id 
+ AND project_task.id =project_comment.project_task_id
  AND project_comment.project_id= project_task.project_id 
  AND project_comment.employee_id = '${req.user.empID}' 
  AND project_task_status.id =project_task.project_task_status_id
