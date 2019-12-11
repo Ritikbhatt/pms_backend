@@ -346,3 +346,37 @@ exports.getDsrDetails=(req,res)=>{
   })
 
 }
+
+
+exports.getProjectDsr =(req,res)=>{
+
+  
+    var query =`SELECT comment,DATE(project_comment.created_date) AS date ,used_second FROM project_comment,project_task WHERE project_comment.project_id= project_task.project_id AND project_comment.employee_id ='${req.user.empID}' AND project_task.project_id ="${req.body.projectID}"`
+    
+    connection.query(query, (err, result) => {
+    console.log(err, "abdad")
+    if (err) {
+        res.send({
+            "code": 404,
+            "message": "error occured",
+            'error': err
+        })
+    }
+    else {
+        let sum=0
+        for(let i=0;i<result.length;i++){
+         sum +=result[i].used_second
+        
+        }
+        console.log(result.length,"booom boom roboya")
+        let obj={"tasks":result,"totalHours":sum}
+        res.send({
+            'code': 200,
+            "message": 'ALL Dsr Task retreived ',
+            'data': obj
+        })
+    }
+
+})
+
+}
