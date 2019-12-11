@@ -451,7 +451,7 @@ exports.get_client_details = (req, res) => {
 
 exports.getAssignedProject = (req, res) => {
 
-    connection.query(`SELECT project_name,project_start_date,project_end_date,project.created_date AS projectCreatedDate  FROM project,project_team,employee WHERE project_team.project_id= project.id AND project_team.employee_id= employee.empID AND project_team.employee_id ='${req.user.empID}' `, (err, result) => {
+    connection.query(`SELECT project_name,project.id AS projectId ,project_start_date,project_end_date,project.created_date AS projectCreatedDate  FROM project,project_team,employee WHERE project_team.project_id= project.id AND project_team.employee_id= employee.empID AND project_team.employee_id ='${req.user.empID}' `, (err, result) => {
         console.log(err)
         if (err) {
             res.send({

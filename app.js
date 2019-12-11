@@ -12,6 +12,7 @@ var attendanceRouter = require('./routes/attendance')
 var project = require('./routes/project')
 var task = require('./routes/task')
 var dsr = require('./routes/dsr')
+var leave = require('./routes/leave')
 const expressip = require('express-ip');
 var app = express();
 
@@ -39,6 +40,7 @@ app.use('/attendance',attendanceRouter)
 app.use('/project',project)
 app.use('/task',task)
 app.use('/dsr',dsr)
+app.use('/leave',leave)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
