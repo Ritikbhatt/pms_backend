@@ -271,7 +271,7 @@ exports.checkTodaysAttendance =(req,res)=>{
     let year = req.body.year ? req.body.year : new Date().getFullYear();
 
 
-  var query =`SELECT in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND DATE(created_date)=CURDATE()`
+  var query =`SELECT in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND DATE(attendance_date)=CURDATE()`
  connection.query(query,(err,result)=>{
   if (err) {
             res.send({
