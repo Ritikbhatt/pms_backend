@@ -266,8 +266,12 @@ exports.attendanceUser = (req, res) => {
     }
 }
 
-exports.attendanceDetails =(req,res)=>{
-  var query =`SELECT attendance_date,attendance_date,in_time,out_time,total_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND  `
+exports.checkTodaysAttendance =(req,res)=>{
+    let month = req.body.month ? req.body.month : new Date().getMonth() + 1;
+    let year = req.body.year ? req.body.year : new Date().getFullYear();
+
+
+  var query =`SELECT in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND DATE(created_date)=CURDATE()`
  connection.query(query,(err,result)=>{
   if (err) {
             res.send({
@@ -279,7 +283,7 @@ exports.attendanceDetails =(req,res)=>{
         else {
             res.send({
                 "code": 200,
-                "message": "Upcoming Birthday List",
+                "message": "Attendance List",
                 "data": result
             })
         }
