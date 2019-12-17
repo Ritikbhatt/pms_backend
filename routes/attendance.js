@@ -7,4 +7,5 @@ var middleware = require("../middleware/middleware")
 
 router.post('/attendanceUser',middleware.checkToken, controller.attendanceUser);
 
+router.post('/attendanceDetails',middleware.checkToken, controller.attendanceDetails);
 module.exports=router;

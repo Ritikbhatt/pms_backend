@@ -45,7 +45,7 @@ var query =`INSERT INTO apply_leave SET ?`
 
 exports.getLeaveType = (req,res)=>{
   
-    var query = `SELECT id,leave_type, FROM leave_type`
+    var query = `SELECT id,leave_type,one_time_allowed FROM leave_type`
     connection.query(query, (err, result) => {
 
         if (err) {
@@ -69,3 +69,6 @@ exports.getLeaveType = (req,res)=>{
 
 }
 
+// year ,leavetype ,No of Day ,leavedate ,approver , approvestatus , reason , apply date , operation
+
+// exports.

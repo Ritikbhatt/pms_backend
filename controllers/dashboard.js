@@ -143,9 +143,9 @@ exports.upcomingBirthDay = function (req, res) {
 
     var query = `
     select * from (
-        select empID,empFirstName,dob,  datediff(DATE_FORMAT(dob,concat('%',YEAR(CURDATE()),'-%m-%d')),NOW()) as no_of_days from employee
+        select empID,empFirstName,dob,gender,  datediff(DATE_FORMAT(dob,concat('%',YEAR(CURDATE()),'-%m-%d')),NOW()) as no_of_days from employee
     union
-        select empID,empFirstName,dob, 
+        select empID,empFirstName,dob,gender, 
         datediff(DATE_FORMAT(dob,concat('%',(YEAR(CURDATE())+1),'-%m-%d')),NOW()) as no_of_days from employee
     ) AS upcomingbirthday
     WHERE no_of_days>0 

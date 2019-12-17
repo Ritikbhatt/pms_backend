@@ -45,3 +45,8 @@ var connection = require("../config/config");
 
          return  datee.getFullYear()+'-'+(parseInt(datee.getMonth())+1)+'-'+(parseInt(datee.getDate()))
     }
+    exports.time= (time)=>{
+        let datee = new Date(time);
+
+         return  datee.getHours()+':'+datee.getMinutes()+':'+datee.getSeconds()
+    }
