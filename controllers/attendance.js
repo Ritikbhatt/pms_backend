@@ -1,7 +1,7 @@
 var connection = require("../config/config")
 
 var ip = require('ip');
-let utils=require('../utils/utitlity')
+let utils = require('../utils/utitlity')
 
 // exports.attendanceUser = (req, res) => {
 //     var date = new Date();
@@ -141,7 +141,7 @@ exports.attendanceUser = (req, res) => {
 
     let in_time_initial = {
         'employee_id': req.user.empID,
-        'attendance_date': date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate(),
+        'attendance_date': date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate(),
         'in_time': date,
         'login_ip': ip.address(),
         'out_time': date,
@@ -154,7 +154,7 @@ exports.attendanceUser = (req, res) => {
 
     let in_time_initial2 = {
         'employee_id': req.user.empID,
-        'attendance_date': date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate(),
+        'attendance_date': date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
         'in_time': date,
         'login_ip': ip.address(),
         'out_time': date,
@@ -178,7 +178,7 @@ exports.attendanceUser = (req, res) => {
                     "err": err
                 })
             } else {
-     let obj ={'time':utils.time(in_time_initial.in_time),'data':results}
+                let obj = { 'time': utils.time(in_time_initial.in_time), 'data': results }
                 console.log('The solution is: ', utils.time(in_time_initial.in_time));
                 res.send({
                     "code": 200,
@@ -200,7 +200,7 @@ exports.attendanceUser = (req, res) => {
                     "err": err
                 })
             } else {
-     console.log(result,"ritik bhatt ji ")
+                console.log(result, "ritik bhatt ji ")
                 if (result.length > 0) {
                     let j;
 
@@ -266,14 +266,14 @@ exports.attendanceUser = (req, res) => {
     }
 }
 
-exports.checkTodaysAttendance =(req,res)=>{
+exports.checkTodaysAttendance = (req, res) => {
     let month = req.body.month ? req.body.month : new Date().getMonth() + 1;
     let year = req.body.year ? req.body.year : new Date().getFullYear();
 
 
-  var query =`SELECT in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND DATE(attendance_date)=CURDATE()`
- connection.query(query,(err,result)=>{
-  if (err) {
+    var query = `SELECT in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' AND DATE(attendance_date)=CURDATE()`
+    connection.query(query, (err, result) => {
+        if (err) {
             res.send({
                 "code": 202,
                 "message": "error occured",
@@ -288,8 +288,98 @@ exports.checkTodaysAttendance =(req,res)=>{
             })
         }
 
- })
+    })
 
 
 
 }
+
+exports.attendanceDetails = (req, res) => {
+    let data = [];
+
+    let month = req.body.month ? req.body.month : new Date().getMonth() + 1;
+    let year = req.body.year ? req.body.year : new Date().getFullYear();
+    var dateMonth = new Date(year, month, 0).getDate();
+    let bus = []
+
+
+
+    let query = `SELECT attendance_date,in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' `
+    connection.query(query, (err, result) => {
+        console.log(err, "hsdbfdsbfkjbsdkjf")
+        if (err) {
+            res.send({
+                "code": 202,
+                "message": "error occured",
+                'error': err
+            })
+        }
+        else {
+
+            for(let j=0;j<result.length;j++){
+                let x =utils.date1(result[j].attendance_date)
+         bus.push(x)
+
+            }
+            console.log(bus,"adkjbjwndljnwejdnwejndjwenjdnwendl")
+                        for (let i = 0; i <= dateMonth; i++) {
+                       
+                                console.log(bus.length,"askdbkasbd")
+                              if(bus[j]!=i ){
+                                  console.log("vello",i)
+                                    resObject = {
+                                        'attendance_date': i,
+                                        'attendance_day': new Date(i).getDay()
+                                    }
+                                    data.push(resObject)
+                                }
+
+                        
+                    }
+
+                                   let obj ={'shakal':data,'bhalu':result}
+                                    res.send({
+                                        "code": 200,
+                                        "message": "attendance details",
+                                        'data': obj
+
+                                    })
+
+
+    
+
+
+        }
+
+
+    })
+
+
+}
+
+// conn./qwery(result)
+// let data = [];
+// let resObject = {
+//     attendance_date :'',
+//     logged_in_time : ''
+// }
+// for(let i=0,i<days.length;i++){
+//     if(month == new Date().getMonth() && year == new Date().getYear())
+
+//     if(i > new Date.getDate()){
+//     days[i] == result.date.getDayDate{
+//         resObject = {
+//             attendance_date : result[i].attendance_date,
+//             attendance_day : result[i].attendace_date.getDay()
+//             logged_in_time
+//         }
+
+//         data.push(resObject)
+//     }else{
+
+//         data.push(resObject)
+//     }
+//     else{
+//         break;
+//     }
+// }

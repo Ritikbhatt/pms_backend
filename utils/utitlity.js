@@ -50,3 +50,10 @@ var connection = require("../config/config");
 
          return  datee.getHours()+':'+datee.getMinutes()+':'+datee.getSeconds()
     }
+
+    exports.date1 =(date)=>{
+
+        let datee = new Date(date);
+
+        return  parseInt(datee.getDate())
+    }
