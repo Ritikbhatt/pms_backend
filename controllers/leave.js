@@ -4,16 +4,16 @@ var utils = require('../utils/utitlity')
 
 exports.applyLeave = (req,res)=>{
    let date =new Date();
- let obj ={
+   let obj ={
     'employee_id':req.user.empID,
     'leave_type_id':req.body.leave_type_id,
     'approver_employee_id':req.body.approver_employee_id,
     'leave_reason' :req.body.leave_reason,
     'contact_number':req.body.contact_number,
-    'leave_to_date':utils.date(req.body.leave_to_date)?utils.date(req.body.leave_to_date):utils.date(date),
-    'leave_from_date' :utils.date(req.body.leave_from_date)?utils.date(req.body.leave_from_date):utils.date(date),
+    'leave_to_date':req.body.leave_to_date ? utils.date(req.body.leave_to_date)?utils.date(req.body.leave_to_date):utils.date(date) : null,
+    'leave_from_date' :req.body.leave_from_date ? utils.date(req.body.leave_from_date)?utils.date(req.body.leave_from_date):utils.date(date) : null,
     'approval_status':req.body.approval_status?req.body.approval_status:'Applied',
-    'approved_employee_id':req.body.approved_employee_id,
+    'approved_employee_id':req.body.approved_employee_id ? req.body.approved_employee_id : req.body.approver_employee_id,
     'leave_days' :req.body.leave_days,
     'created_date' :date,
     'modified_date' :date

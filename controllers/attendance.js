@@ -315,38 +315,47 @@ exports.attendanceDetails = (req, res) => {
             })
         }
         else {
+            let resObject = {
+                attendance_date: '',
+                in_time: ''
+            }
 
-            for(let j=0;j<result.length;j++){
-                let x =utils.date1(result[j].attendance_date)
-         bus.push(x)
+            for (let j = 0; j < result.length; j++) {
+                let x = utils.date1(result[j].attendance_date)
+                bus.push(x)
 
             }
-            console.log(bus,"adkjbjwndljnwejdnwejndjwenjdnwendl")
-                        for (let i = 0; i <= dateMonth; i++) {
-                       
-                                console.log(bus.length,"askdbkasbd")
-                              if(bus[j]!=i ){
-                                  console.log("vello",i)
-                                    resObject = {
-                                        'attendance_date': i,
-                                        'attendance_day': new Date(i).getDay()
-                                    }
-                                    data.push(resObject)
-                                }
+            console.log(bus, "adkjbjwndljnwejdnwejndjwenjdnwendl")
+            for (let i = 0; i <= dateMonth; i++) {
+                for (let k = 0; k < bus.length; k++) {
+                    console.log(k, "you are bhalluuu")
+                    if (bus[k] == i) {
+                        console.log("vello", i)
+                        resObject = {
+                            attendance_date: utils.date(result[k].attendance_date),
+                            attendance_day: new Date().getDay(i)
+                        }
+                        data.push(resObject)
+                    }
+                    else {
+                        data.push(resObject)
 
-                        
                     }
 
-                                   let obj ={'shakal':data,'bhalu':result}
-                                    res.send({
-                                        "code": 200,
-                                        "message": "attendance details",
-                                        'data': obj
 
-                                    })
+                }
+
+            }
 
 
-    
+
+            res.send({
+                "code": 200,
+                "message": "attendance details",
+                'data': data
+
+            })
+
 
 
         }
