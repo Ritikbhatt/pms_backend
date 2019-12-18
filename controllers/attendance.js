@@ -294,19 +294,20 @@ exports.checkTodaysAttendance = (req, res) => {
 
 }
 
-exports.attendanceDetails = (req, res) => {
+exports.attendanceDetails =  (req, res) => {
     let data = [];
 
     let month = req.body.month ? req.body.month : new Date().getMonth() + 1;
     let year = req.body.year ? req.body.year : new Date().getFullYear();
     var dateMonth = new Date(year, month, 0).getDate();
-    let bus = []
+    let bus = [];
+    let resData = [];
 
 
-
+    console.log("API executed")
     let query = `SELECT attendance_date,in_time,out_time,login_ip FROM employee_attendance WHERE employee_id='${req.user.empID}' `
-    connection.query(query, (err, result) => {
-        console.log(err, "hsdbfdsbfkjbsdkjf")
+    connection.query(query, async (err, result) => {
+        console.log(err, "hsdbfdsbfkjbsdkjf",result && utils.date1(result[0].attendance_date),typeof utils.date1(result[0].attendance_date))
         if (err) {
             res.send({
                 "code": 202,
@@ -315,44 +316,46 @@ exports.attendanceDetails = (req, res) => {
             })
         }
         else {
-            let resObject = {
-                attendance_date: '',
-                in_time: ''
-            }
+            
+            console.log(result,"rrrrr")
 
-            for (let j = 0; j < result.length; j++) {
-                let x = utils.date1(result[j].attendance_date)
-                bus.push(x)
-
-            }
-            console.log(bus, "adkjbjwndljnwejdnwejndjwenjdnwendl")
-            for (let i = 0; i <= dateMonth; i++) {
-                for (let k = 0; k < bus.length; k++) {
-                    console.log(k, "you are bhalluuu")
-                    if (bus[k] == i) {
-                        console.log("vello", i)
-                        resObject = {
-                            attendance_date: utils.date(result[k].attendance_date),
-                            attendance_day: new Date().getDay(i)
-                        }
-                        data.push(resObject)
-                    }
-                    else {
-                        data.push(resObject)
-
-                    }
-
-
+            for(let i = 0;i<dateMonth;i++){
+                let resObje = {
+                    attendace_date : i+1 +'-'+ month +'-'+ year,
+                    in_time : '',
+                    out_time : '',
+                    total_time:'',
+                    login_ip:''
                 }
-
+                 result.forEach((element,key)=>{
+                     console.log(element &&  utils.date1(element.attendance_date),"==", i,"Check match",element)
+                    if (element &&  utils.date1(element.attendance_date) == i){
+                        console.log('push insiede')
+                        let resObje1 = {
+                            attendace_date : element.attendance_date,
+                            in_time : element.in_time,
+                            out_time : element.out_time,
+                            total_time:element.total_time,
+                            login_ip:element.login_ip
+                        }
+                        resData.push(resObje1);
+                    }else{
+                        if(!resData[i]){
+                            resData.push(resObje);
+                        }
+                    }
+                })
+                
             }
+            console.log(resData,"Response data",resData.length)
+
 
 
 
             res.send({
                 "code": 200,
                 "message": "attendance details",
-                'data': data
+                'data': resData
 
             })
 
