@@ -52,7 +52,7 @@ exports.singleUserlist = function (req, res) {
 
 exports.update = function (req, res) {
 
-    connection.query("SELECT empID,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj FROM employee  WHERE  empID = ?", req.body.empID, function (error, resul, fields) {
+    connection.query("SELECT empID,empFirstName,middle_name,empLastName,gender,martial_status,empemail,mobile_no,dob,doj FROM employee  WHERE  empID = ?", [req.body.empID], function (error, resul, fields) {
         if (error) {
             // console.log("error ocurred",error);
             res.send({

@@ -23,26 +23,39 @@ exports.add_project_task = (req, res) => {
         'is_active': req.body.is_active ? req.body.is_active : 1
     }
 
-
-    connection.query('INSERT INTO project_task SET ?', obj, (err, result) => {
-        console.log(err, "ritik")
-        if (err) {
+  return new Promise(function (resolve, reject) {
+        connection.query('INSERT INTO project_task SET ?', obj, (err, result) => {
+            console.log(err, "ritik")
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(result)
+            }
+        })
+    })
+        .then(function (value) {
+            res.send({
+                "code": 202,
+                "message": "task added sucessfully",
+                'error': value
+            })
+        })
+        .catch(function (err) {
             res.send({
                 "code": 404,
                 "message": "error occured",
                 'error': err
-
             })
-        }
-        else {
-            res.send({
-                'code': 200,
-                "message": 'Task inserted sucessfully',
-                'data': result
-            })
-        }
-    })
+        });
 }
+
+
+
+
+
+
+
 
 
 exports.getEmployeeProjects = (req, res) => {
@@ -50,6 +63,7 @@ exports.getEmployeeProjects = (req, res) => {
     var query = `SELECT project.id,project.project_name FROM project_team,project WHERE project_team.employee_id = '${req.user.empID}' AND project_team.project_id = project.id`
     connection.query(query, (err, result) => {
         console.log(err, "abdad")
+       
         if (err) {
             res.send({
                 "code": 404,
@@ -203,38 +217,38 @@ exports.allPendingTasks = (req, res) => {
 
 }
 // dsr details // dsr name,dsr date, time
-exports.allTaskDsr =(req,res)=>{
- 
-    var query =`SELECT comment,DATE(project_comment.created_date) AS date ,used_second 
+exports.allTaskDsr = (req, res) => {
+
+    var query = `SELECT comment,DATE(project_comment.created_date) AS date ,used_second 
     FROM project_comment,project_task 
     WHERE project_comment.project_task_id= project_task.id
     AND project_comment.employee_id ='${req.user.empID}' 
     AND project_comment.project_task_id ="${req.body.taskId}"`
-    
-    connection.query(query, (err, result) => {
-    console.log(err, "abdad")
-    if (err) {
-        res.send({
-            "code": 404,
-            "message": "error occured",
-            'error': err
-        })
-    }
-    else {
-        let sum=0
-        for(let i=0;i<result.length;i++){
-         sum +=result[i].used_second
-        
-        }
-        console.log(result.length,"booom boom roboya")
-        let obj={"tasks":result,"totalHours":sum}
-        res.send({
-            'code': 200,
-            "message": 'ALL Dsr Task retreived ',
-            'data': obj
-        })
-    }
 
-})
+    connection.query(query, (err, result) => {
+        console.log(err, "abdad")
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "error occured",
+                'error': err
+            })
+        }
+        else {
+            let sum = 0
+            for (let i = 0; i < result.length; i++) {
+                sum += result[i].used_second
+
+            }
+            console.log(result.length, "booom boom roboya")
+            let obj = { "tasks": result, "totalHours": sum }
+            res.send({
+                'code': 200,
+                "message": 'ALL Dsr Task retreived ',
+                'data': obj
+            })
+        }
+
+    })
 
 }

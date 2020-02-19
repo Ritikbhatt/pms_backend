@@ -354,11 +354,11 @@ exports.getProjectDsr =(req,res)=>{
     var query =`SELECT comment,DATE(project_comment.created_date) 
     AS date ,used_second,task_name FROM project_comment,project_task 
     WHERE project_comment.project_id= project_task.project_id 
-    AND project_comment.employee_id ='${req.user.empID}' 
+    AND project_comment.employee_id =? 
     AND project_task.id = project_comment.project_task_id
-    AND project_comment.project_id ="${req.body.projectID}"`
+    AND project_comment.project_id =?`
     
-    connection.query(query, (err, result) => {
+    connection.query(query,[req.user.empID,req.body.projectID], (err, result) => {
     console.log(err, "abdad")
     if (err) {
         res.send({

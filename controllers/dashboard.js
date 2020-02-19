@@ -5,11 +5,11 @@ exports.AllCounts = function (req, res) {
 
     var query = `SELECT
   (SELECT COUNT(*) FROM employee WHERE status = 0) as totalEmployee, 
-  (SELECT COUNT(*) FROM project_team WHERE project_team.employee_id = '${req.user.empID}') as totalProjects,
-  (SELECT COUNT(*) FROM project_dsr WHERE project_dsr.employee_id = '${req.user.empID}') as totalDsr,
+  (SELECT COUNT(*) FROM project_team WHERE project_team.employee_id = ?) as totalProjects,
+  (SELECT COUNT(*) FROM project_dsr WHERE project_dsr.employee_id = ?) as totalDsr,
   (SELECT COUNT(*) FROM project_task WHERE project_task.project_id = 1) as totalTask`;
     // var query = 'SELECT count(*) as allEmployees,count(*) as totalProjects FROM  employee,project  WHERE '
-    connection.query(query, (err, result) => {
+    connection.query(query,[req.user.empID,req.user.empID], (err, result) => {
         console.log(err)
         if (err) {
             res.send({

@@ -72,3 +72,30 @@ exports.getLeaveType = (req,res)=>{
 // year ,leavetype ,No of Day ,leavedate ,approver , approvestatus , reason , apply date , operation
 
 // exports.
+
+
+
+
+exports.appliedLeaveList = (req,res)=>{
+    var query = `SELECT attendance_date,in_time,out_time,total_time,login_ip FROM employee_attendance WHERE employee_id=?`
+    connection.query(query,[req.user.empID],(err, result) => {
+
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "Something went wrong",
+                'error': err
+
+            })
+
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'leave type retreived success',
+                'data': result
+            })
+        }
+    })
+
+}

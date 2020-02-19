@@ -1,6 +1,6 @@
 var connection = require("../config/config");
 var CodeGenerator = require('node-code-generator');
-let utils=require('../utils/utitlity')
+let utils = require('../utils/utitlity')
 
 // Generate an array of random unique project_code according to the provided pattern:
 
@@ -108,16 +108,16 @@ exports.add_project = (req,res) =>{
 
 
 exports.add_project = (req, res) => {
-    var date =new Date();
+    var date = new Date();
     var obj = {
 
         'project_billing_method_id': req.body.project_billing_method_id,
-        'project_model': req.body.project_model?req.body.project_model :'Scrum',
+        'project_model': req.body.project_model ? req.body.project_model : 'Scrum',
         'project_code': req.body.project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
         'project_start_date': utils.date(req.body.project_start_date),
-        'project_end_date':  utils.date(req.body.project_end_date),
+        'project_end_date': utils.date(req.body.project_end_date),
         'project_priority_id': req.body.project_priority_id,
         'project_status_id': req.body.project_status_id,
         'percentage_complete': req.body.percentage_complete,
@@ -128,62 +128,68 @@ exports.add_project = (req, res) => {
         'project_document': req.body.project_document,
         'created_date': date
     }
+    return new Promise(function (resolve, reject) {
+        connection.query('INSERT INTO project SET ?', obj, (err, result) => {
+            console.log(err, "ritik")
+            if (err) {
+                reject(err);
+            }
+            else {
+                var str = req.body.employee_id;
+                var temp = JSON.parse("[" + str + "]");
 
-    connection.query('INSERT INTO project SET ?', obj, (err, result) => {
-        console.log(err, "ritik")
-        if (err) {
+                if (temp.length > 0) {
+                    for (let i = 0; i < temp.length; i++) {
+                        let empObj = {
+                            'project_id': result.insertId,
+                            'employee_id': temp[i],
+                            'created_date': date,
+                            'modified_date': date
+                        }
+
+                        connection.query(`INSERT INTO project_team SET ? `, empObj, (error, results) => {
+
+                            if (error) {
+                               return  reject(error);
+                            } else {
+                                data = results
+                                console.log("project team Record Added")
+                                return resolve(results)
+
+                            }
+
+                        })
+                    }
+
+                    return resolve(result);
+                }
+
+            }
+
+        })
+
+    })
+        .then(function (value) {
+            res.send({
+                "code": 202,
+                "message": "project added sucessfully",
+                'data': value
+            })
+        })
+
+        .catch(function (err) {
             res.send({
                 "code": 404,
                 "message": "error occured",
                 'error': err
-
             })
-        }
-        else {
-            var str = req.body.employee_id;
-            var temp = str;
-            let data;
-            if (temp.length > 0) {
-                for (let i = 0; i < temp.length; i++) {
-                    let empObj = {
-                        'project_id': result.insertId,
-                        'employee_id': temp[i],
-                        'created_date': date,
-                        'modified_date': date
-                    }
-
-                    connection.query(`INSERT INTO project_team SET ? `, empObj, (err, results) => {
-                        console.log(err, "bhatt")
-                        if (err) {
-                            res.send({
-                                "code": 404,
-                                "message": "error occured",
-                                'error': err
-
-                            })
-                        } else {
-                            data = results
-                            console.log("project team Record Added")
-                        }
-
-                    })
-                }
-                res.send({
-                    "code": 200,
-                    "message": "Project added successfully.",
-                    "data": result
-                })
-            }
-
-        }
-    })
-
+        });
 }
 
 
 
 exports.project_billing_method_details = (req, res) => {
-
+try{
     connection.query(`SELECT id,billing_method FROM project_billing_method `, (err, result) => {
         console.log(err)
         if (err) {
@@ -204,6 +210,10 @@ exports.project_billing_method_details = (req, res) => {
 
 
     })
+}
+catch(error){
+console.log(error)
+}
 }
 
 
@@ -263,7 +273,7 @@ exports.update_project = (req, res) => {
 
     var obj = {
         'project_billing_method_id': req.body.project_billing_method_id,
-        'project_model': req.body.project_model?req.body.project_model :'Scrum',
+        'project_model': req.body.project_model ? req.body.project_model : 'Scrum',
         'project_code': req.body.project_code,
         'project_name': req.body.project_name,
         'project_description': req.body.project_description,
@@ -344,7 +354,7 @@ exports.listProject = (req, res) => {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
 
             })
 
@@ -386,7 +396,7 @@ exports.project_clients = (req, res) => {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
 
             })
 
@@ -408,7 +418,7 @@ exports.get_client = (req, res) => {
             res.send({
                 "code": 202,
                 "message": "error occured",
-                'error':err 
+                'error': err
             })
 
         }
@@ -433,7 +443,7 @@ exports.get_client_details = (req, res) => {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err                 
+                'error': err
             })
 
         }
@@ -457,7 +467,7 @@ exports.getAssignedProject = (req, res) => {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
             })
 
         }
@@ -473,13 +483,13 @@ exports.getAssignedProject = (req, res) => {
     })
 }
 
-exports.getReportingManager = (req,res)=>{
+exports.getReportingManager = (req, res) => {
     connection.query(`SELECT empFirstName,empID FROM employee WHERE is_admin = 1`, (err, result) => {
         if (err) {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
             })
 
         }
@@ -491,16 +501,16 @@ exports.getReportingManager = (req,res)=>{
             })
         }
     })
-     
+
 }
 
-exports.getTeamForProject = (req,res)=>{
+exports.getTeamForProject = (req, res) => {
     connection.query(`SELECT empFirstName,empID FROM employee WHERE is_admin = 0 AND status = 0`, (err, result) => {
         if (err) {
             res.send({
                 "code": 404,
                 "message": "error occured",
-                'error':err 
+                'error': err
             })
 
         }
@@ -512,7 +522,7 @@ exports.getTeamForProject = (req,res)=>{
             })
         }
     })
-     
+
 }
 
 
@@ -538,17 +548,17 @@ exports.getProjectDsr = (req, res) => {
     })
 }
 
-exports.getAllProjectDetails=(req,res)=>{
-//  var query =`SELECT project_task.*,project_priority,project_status,billing_method
-//   FROM project,project_task ,project_billing_method,project_priority,project_status
-//  WHERE project.id=project_task.project_id AND
-//  project_task.project_id ="${req.body.project_id}"`
+exports.getAllProjectDetails = (req, res) => {
+    //  var query =`SELECT project_task.*,project_priority,project_status,billing_method
+    //   FROM project,project_task ,project_billing_method,project_priority,project_status
+    //  WHERE project.id=project_task.project_id AND
+    //  project_task.project_id ="${req.body.project_id}"`
 
 
 
 
 
- var query =`SELECT 
+    var query = `SELECT 
  project.id
 ,project_code
 ,project_name
@@ -574,31 +584,31 @@ project.project_billing_method_id=project_billing_method.id AND
 project.id ='${req.body.project_id}' AND
 project_team.employee_id='${req.user.empID}' `
 
- 
- connection.query(query, (err, result) => {
-    if (err) {
-        res.send({
-            "code": 404,
-            "message": "Something went wrong",
-            'error': err
 
-        })
+    connection.query(query, (err, result) => {
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "Something went wrong",
+                'error': err
 
-    }
-    else {
-        res.send({
-            'code': 200,
-            "message": 'project details retrieved successfully',
-            'data': result
-        })
-    }
-})
+            })
+
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'project details retrieved successfully',
+                'data': result
+            })
+        }
+    })
 }
 
 
 
-exports.getAllTaskDetails=(req,res)=>{
-var query =`SELECT
+exports.getAllTaskDetails = (req, res) => {
+    var query = `SELECT
 project_task.task_name
  ,project_task.task_description
  ,project_task.percentage_complete
@@ -622,22 +632,22 @@ project_task.task_name
  project_team.employee_id='${req.user.empID}'
 `
 
-connection.query(query, (err, result) => {
-    if (err) {
-        res.send({
-            "code": 404,
-            "message": "Something went wrong",
-            'error': err
+    connection.query(query, (err, result) => {
+        if (err) {
+            res.send({
+                "code": 404,
+                "message": "Something went wrong",
+                'error': err
 
-        })
+            })
 
-    }
-    else {
-        res.send({
-            'code': 200,
-            "message": 'All Task Details Retreived Successfully .',
-            'data': result
-        })
-    }
-})
+        }
+        else {
+            res.send({
+                'code': 200,
+                "message": 'All Task Details Retreived Successfully .',
+                'data': result
+            })
+        }
+    })
 }

@@ -17,6 +17,7 @@ exports.addUser = function (req, res) {
         "empLastName": req.body.empLastName,
         "gender": req.body.gender,
         "martial_status": req.body.martial_status,
+        "employee_code":req.body.employee_code,
         "empemail": req.body.empemail,
         "password": req.body.password,
         "mobile_no": req.body.mobile_no,
